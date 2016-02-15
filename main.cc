@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 			RWNode(),                // Initial oode
 			i,                       // Index
 			36,                      // Number of nodes in scenario
-			1.0);                    // Interest rate
+			0.003);                    // Interest rate
       cout << "Real-World Scenario " << i << endl;
       scenario.PrintNodes();
       cout << endl;
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
 			RWNode(),                // Initial oode
 			i,                       // Index
 			36,                      // Number of nodes in scenario
-			1.0);                    // Interest rate
+			0.003);                    // Interest rate
       cout << "Risk-Neutral Scenario " << i << endl;
       scenario.PrintNodes();
       cout << endl;
