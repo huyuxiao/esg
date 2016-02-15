@@ -1,24 +1,40 @@
 #include "scenario.h"
 
 #include <iostream>
+#include <memory>
 
 #include "node.h"
 
-const int RWScenario::kNumRWNodes = 37;
+using std::unique_ptr;
 
-RWScenario::RWScenario(const int id)
-  : rw_nodes_(kNumRWNodes),
-    id_(id) {
-  for (int i = 1; i < kNumRWNodes; ++i) {
-    rw_nodes_[i].TransFrom(rw_nodes_[i - 1]);
+Scenario::Scenario(ScenarioType type, const Node& initial_node, int id,
+		   int num_nodes, float interest_rate)
+  : id_(id) {
+  const Node* prev = &initial_node;
+  for (int i = 0; i < num_nodes; ++i) {
+    Node* new_node;
+    switch (type) {
+    case REAL_WORLD:
+      new_node = new RWNode();
+      break;
+    case RISK_NEUTRAL:
+      new_node = new RNNode(interest_rate);
+      break;
+    default:
+      break;
+    }
+    new_node->TransFrom(prev);
+    prev = new_node;
+    nodes_.push_back(unique_ptr<Node>(new_node));
   }
 }
 
-RWScenario::~RWScenario() {}
+Scenario::~Scenario() {}
 
-void RWScenario::PrintNodes() const {
-  for (int i = 0; i < kNumRWNodes; ++i) {
-    std::cout << id_ << "," << i << ","
-	      << rw_nodes_[i].ESGOutput() << std::endl;
+void Scenario::PrintNodes() const {
+  int idx = 0;
+  for (const auto& node : nodes_) {
+    std::cout << id_ << "," << idx++ << ","
+	      << node->ESGOutput() << std::endl;
   }
 }
