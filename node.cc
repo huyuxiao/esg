@@ -19,6 +19,10 @@ Node::Node()
   : state_(0),
     log_return_(0.0f) {}
 
+Node::Node(int state)
+  : state_(state),
+    log_return_(0.0f) {}
+
 Node::~Node() {}
 
 void Node::TransFrom(const Node* node) {
@@ -27,6 +31,10 @@ void Node::TransFrom(const Node* node) {
 	node->GetSigma() * GenerateNormalRand();
   state_ = (old_state + (GenerateUniformRand() <=
 			 kTransProb[old_state])) % 2;
+}
+
+const float Node::GetLogReturn() const {
+  return log_return_;
 }
 
 const string Node::ESGOutput() const {
