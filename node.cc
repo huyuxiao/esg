@@ -17,22 +17,21 @@ std::normal_distribution<float> Node::normal_(0, 1);
 
 Node::Node()
   : state_(0),
-    stock_price_(1000.0f) {}
+    log_return_(0.0f) {}
 
 Node::~Node() {}
 
 void Node::TransFrom(const Node& node) {
   int old_state = node.state_;
-  stock_price_ = node.stock_price_ *
-    exp(node.GetMean() +
-	node.GetSigma() * GenerateNormalRand());
+  log_return_ = node.GetMean() +
+	node.GetSigma() * GenerateNormalRand();
   state_ = (old_state + (GenerateUniformRand() <=
 			 kTransProb[old_state])) % 2;
 }
 
 const string Node::ESGOutput() const {
-  return "State: " + std::to_string(state_) + "  Price: " +
-    std::to_string(stock_price_);
+  return std::to_string(state_) + "," +
+    std::to_string(log_return_);
 }
 
 // static

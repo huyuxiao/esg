@@ -35,7 +35,7 @@ class Node {
   static std::uniform_real_distribution<float> uniform_;
   static std::normal_distribution<float> normal_;
 
-  float stock_price_;
+  float log_return_;
 };
 
 class RWNode : public Node {

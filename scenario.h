@@ -3,18 +3,33 @@
 
 #include <vector>
 
+class RNNode;
 class RWNode;
 
-class Scenario {
+class RWScenario {
  public:
-  Scenario();
-  ~Scenario();
+  RWScenario(int id);
+  ~RWScenario();
 
   void PrintNodes() const;
 
  private:
   static const int kNumRWNodes;
   std::vector<RWNode> rw_nodes_;
+  const int id_;
+};
+
+class RNScenario {
+ public:
+  RNScenario(int id);
+  ~RNScenario();
+
+  void PrintNodes() const;
+
+ private:
+  static const int kNumRWNodes;
+  std::vector<RNNode> rn_nodes_;
+  const int id_;
 };
 
 #endif  // SCENARIO_H_
