@@ -18,6 +18,7 @@ class Scenario {
   ~Scenario();
 
   void PrintNodes() const;
+  void PrintLogReturns() const;
 
  private:
   const int id_;

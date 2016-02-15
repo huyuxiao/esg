@@ -7,11 +7,13 @@
 class Node {
  public:
   Node();
+  Node(int state);
   ~Node();
 
   // Given an existing node, initialize the current object by simulating a one
   // step transition from that node.
   void TransFrom(const Node* node);
+  const float GetLogReturn() const;
   const std::string ESGOutput() const;
 
  protected:
@@ -41,6 +43,7 @@ class Node {
 class RWNode : public Node {
  public:
   RWNode() {}
+  RWNode(int state) : Node(state) {}
   ~RWNode() {}
 
  protected:

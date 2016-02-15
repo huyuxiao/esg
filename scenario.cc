@@ -5,6 +5,8 @@
 
 #include "node.h"
 
+using std::cout;
+using std::endl;
 using std::unique_ptr;
 
 Scenario::Scenario(ScenarioType type, const Node& initial_node, int id,
@@ -34,7 +36,19 @@ Scenario::~Scenario() {}
 void Scenario::PrintNodes() const {
   int idx = 0;
   for (const auto& node : nodes_) {
-    std::cout << id_ << "," << idx++ << ","
-	      << node->ESGOutput() << std::endl;
+    cout << id_ << "," << idx++ << "," << node->ESGOutput() << endl;
   }
+}
+
+void Scenario::PrintLogReturns() const {
+  bool first_run = true;
+  for (const auto& node : nodes_) {
+    if (first_run) {
+      first_run = false;
+    } else {
+      cout << ",";
+    }
+    cout << node->GetLogReturn();
+  }
+  cout << endl;
 }

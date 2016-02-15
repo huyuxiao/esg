@@ -16,7 +16,14 @@ using std::string;
 void PrintUsage(const char* cmd) {
   cerr << "Usage:" << endl;
   cerr << "    " << cmd << " <type>" << endl;
-  cerr << "where <type> can be \"rw\" or \"rn\"." << endl;
+  cerr << "where <type> can be \"rw\" or \"rn\" or \"rn0\" or \"rn1\"." << endl;
+  cerr << "  - rw:  Generate 1000 real-world scenarios" << endl;
+  cerr << "  - rn:  Generate 200 risk-neutral scenarios" << endl;
+  cerr << "  - rn0: Generate 200x36 risk-neutral log-return matrix from state 0"
+       << endl;
+  cerr << "  - rn1: Generate 200x36 risk-neutral log-return matrix from state 1"
+       << endl;
+  cerr << endl;
 }
 
 int main(int argc, char* argv[]) {
@@ -32,7 +39,7 @@ int main(int argc, char* argv[]) {
 			RWNode(),                // Initial oode
 			i,                       // Index
 			36,                      // Number of nodes in scenario
-			0.003);                    // Interest rate
+			0.003);                  // Interest rate
       cout << "Real-World Scenario " << i << endl;
       scenario.PrintNodes();
       cout << endl;
@@ -44,10 +51,30 @@ int main(int argc, char* argv[]) {
 			RWNode(),                // Initial oode
 			i,                       // Index
 			36,                      // Number of nodes in scenario
-			0.003);                    // Interest rate
+			0.003);                  // Interest rate
       cout << "Risk-Neutral Scenario " << i << endl;
       scenario.PrintNodes();
       cout << endl;
+    }
+  } else if (type == "rn0") {
+    // Generation of risk-neutral scenario.
+    for (int i = 0; i < 200; ++i) {
+      Scenario scenario(Scenario::RISK_NEUTRAL,  // RISK_NEUTRAL or REAL_WORLD
+			RWNode(0),               // Initial oode
+			i,                       // Index
+			36,                      // Number of nodes in scenario
+			0.003);                  // Interest rate
+      scenario.PrintLogReturns();
+    }
+  } else if (type == "rn1") {
+    // Generation of risk-neutral scenario.
+    for (int i = 0; i < 200; ++i) {
+      Scenario scenario(Scenario::RISK_NEUTRAL,  // RISK_NEUTRAL or REAL_WORLD
+			RWNode(1),               // Initial oode
+			i,                       // Index
+			36,                      // Number of nodes in scenario
+			0.003);                  // Interest rate
+      scenario.PrintLogReturns();
     }
   } else {
     PrintUsage(argv[0]);
