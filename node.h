@@ -11,7 +11,7 @@ class Node {
 
   // Given an existing node, initialize the current object by simulating a one
   // step transition from that node.
-  void TransFrom(const Node& node);
+  void TransFrom(const Node* node);
   const std::string ESGOutput() const;
 
  protected:

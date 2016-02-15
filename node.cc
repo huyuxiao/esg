@@ -21,10 +21,10 @@ Node::Node()
 
 Node::~Node() {}
 
-void Node::TransFrom(const Node& node) {
-  int old_state = node.state_;
-  log_return_ = node.GetMean() +
-	node.GetSigma() * GenerateNormalRand();
+void Node::TransFrom(const Node* node) {
+  int old_state = node->state_;
+  log_return_ = node->GetMean() +
+	node->GetSigma() * GenerateNormalRand();
   state_ = (old_state + (GenerateUniformRand() <=
 			 kTransProb[old_state])) % 2;
 }

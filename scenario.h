@@ -1,35 +1,27 @@
 #ifndef SCENARIO_H_
 #define SCENARIO_H_
 
+#include <memory>
 #include <vector>
 
-class RNNode;
-class RWNode;
+class Node;
 
-class RWScenario {
+class Scenario {
  public:
-  RWScenario(int id);
-  ~RWScenario();
+  enum ScenarioType {
+    REAL_WORLD,
+    RISK_NEUTRAL,
+  };
+
+  Scenario(ScenarioType type, const Node& initial_node,
+	   int id, int num_nodes, float interest_rate);
+  ~Scenario();
 
   void PrintNodes() const;
 
  private:
-  static const int kNumRWNodes;
-  std::vector<RWNode> rw_nodes_;
   const int id_;
-};
-
-class RNScenario {
- public:
-  RNScenario(int id);
-  ~RNScenario();
-
-  void PrintNodes() const;
-
- private:
-  static const int kNumRWNodes;
-  std::vector<RNNode> rn_nodes_;
-  const int id_;
+  std::vector<std::unique_ptr<Node>> nodes_;
 };
 
 #endif  // SCENARIO_H_
