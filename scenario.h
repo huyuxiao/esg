@@ -19,6 +19,10 @@ class Scenario {
 
   void PrintNodes() const;
   void PrintLogReturns() const;
+  // Compute the aggregated log return for given number of steps.
+  float AggregateLogReturn(int steps) const;
+  float GetLiability(int steps, float shock) const;
+  int size() const { return nodes_.size(); }
 
  private:
   const int id_;

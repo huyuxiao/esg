@@ -4,6 +4,8 @@
 #include <random>
 #include <string>
 
+#include "constants.h"
+
 class Node {
  public:
   Node();
@@ -19,7 +21,6 @@ class Node {
  protected:
   virtual const float GetMean() const = 0;
   virtual const float GetSigma() const = 0;
-  static const int kMaxNumStates = 2;
   static const float kMean[kMaxNumStates];
   static const float kSigma[kMaxNumStates];
   static const float kTransProb[kMaxNumStates];

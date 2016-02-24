@@ -3,8 +3,10 @@
 #include <iostream>
 #include <memory>
 
+#include "constants.h"
 #include "node.h"
 
+using std::cerr;
 using std::cout;
 using std::endl;
 using std::unique_ptr;
@@ -34,10 +36,10 @@ Scenario::Scenario(ScenarioType type, const Node& initial_node, int id,
 Scenario::~Scenario() {}
 
 void Scenario::PrintNodes() const {
-  int idx = 0;
   for (const auto& node : nodes_) {
-    cout << id_ << "," << idx++ << "," << node->ESGOutput() << endl;
+    cout << node->ESGOutput() << " ";
   }
+  cout << endl;
 }
 
 void Scenario::PrintLogReturns() const {
@@ -51,4 +53,23 @@ void Scenario::PrintLogReturns() const {
     cout << node->GetLogReturn();
   }
   cout << endl;
+}
+
+float Scenario::AggregateLogReturn(int steps) const {
+  if (steps <= 0 || unsigned(steps) > nodes_.size()) {
+    cerr << "There are " << nodes_.size()
+	 << " nodes, but trying to access index " << steps << endl;
+    exit(kExitFailure);
+  }
+  float result = 0.0;
+  for (int i = 0; i < steps; ++i) {
+    result += nodes_[i]->GetLogReturn();
+  }
+  return result;
+}
+
+float Scenario::GetLiability(int steps, float shock) const {
+  const float sum_log_return = AggregateLogReturn(steps);
+  const float liability = 1.0 - exp(sum_log_return) * shock;
+  return -(liability > 0.0 ? liability : 0.0);
 }

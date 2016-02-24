@@ -2,11 +2,10 @@
 #include <string>
 #include <vector>
 
+#include "constants.h"
 #include "node.h"
 #include "scenario.h"
-
-const int kExitSuccess = 0;
-const int kExitFailure = 1;
+#include "simulation.h"
 
 using std::cerr;
 using std::cout;
@@ -32,7 +31,30 @@ int main(int argc, char* argv[]) {
     return kExitFailure;
   }
   const string type(argv[1]);
-  if (type == "rw") {
+  if (type == "test") {
+    Simulation risk_neutral_simulation;
+    for (int i = 0; i < kNumRiskNeutralSimulations; ++i) {
+      risk_neutral_simulation.AddScenario(
+	  new Scenario(Scenario::RISK_NEUTRAL,  // RISK_NEUTRAL or REAL_WORLD
+		       RWNode(),                // Initial oode
+		       i,                       // Index
+		       kNumMonths,              // Number of nodes in scenario
+		       kInterestRate));         // Interest rate
+    }
+    risk_neutral_simulation.PrintScenarios();
+    for (int i = 1; i <= kNumMonths; ++i) {
+      cout << "Average aggregated return rate for " << i << " month(s): "
+	   << risk_neutral_simulation.GetAverageAggregatedReturnRate(i) << endl;
+    }
+    for (int i = 1; i <= kNumMonths; ++i) {
+      cout << "Average liability rate for " << i << " month(s): "
+	   << risk_neutral_simulation.GetAverageLiability(i) << endl;
+    }
+    for (int i = 1; i <= kNumMonths; ++i) {
+      cout << "Average shocked liability rate for " << i << " month(s): "
+	   << risk_neutral_simulation.GetAverageLiability(i, 0.99) << endl;
+    }
+  } else if (type == "rw") {
     // Generation of risk-neutral scenario.
     for (int i = 0; i < 1000; ++i) {
       Scenario scenario(Scenario::REAL_WORLD,    // RISK_NEUTRAL or REAL_WORLD
