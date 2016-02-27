@@ -18,7 +18,7 @@ Simulation::~Simulation() {}
 void Simulation::AddScenario(const Scenario* scenario) {
   if (num_months_ >= 0 && num_months_ != scenario->size()) {
     cerr << "Existing scenarios have " << num_months_ << " months, while trying"
-	 << " to add another with " << scenario->size() << " months." << endl;
+	 << " to add anoxxther with " << scenario->size() << " months." << endl;
     exit(kExitFailure);
   } else if (num_months_ < 0) {
     num_months_ = scenario->size();
@@ -26,11 +26,11 @@ void Simulation::AddScenario(const Scenario* scenario) {
   scenarios_.push_back(std::move(unique_ptr<const Scenario>(scenario)));
 }
 
-float Simulation::GetAverageAggregatedReturnRate(int steps) const {
+float Simulation::GetAverageStockPrice(float initial_price, int month) const {
   float sum = 0.0;
   int count = 0;
   for (const auto& scenario : scenarios_) {
-    sum += exp(scenario->AggregateLogReturn(steps));
+    sum += scenario->GetStockPrice(initial_price, month);
     ++count;
   }
   if (count == 0) {
@@ -40,11 +40,12 @@ float Simulation::GetAverageAggregatedReturnRate(int steps) const {
   return sum / count;
 }
 
-float Simulation::GetAverageLiability(int steps, float shock) const {
+float Simulation::GetAverageLiability(float initial_price, int month,
+				      float shock) const {
   float sum = 0.0;
   int count = 0;
   for (const auto& scenario : scenarios_) {
-    sum += scenario->GetLiability(steps, shock);
+    sum += scenario->GetLiability(initial_price, month, shock);
     ++count;
   }
   if (count == 0) {

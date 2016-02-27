@@ -17,6 +17,7 @@ class Node {
   void TransFrom(const Node* node);
   const float GetLogReturn() const;
   const std::string ESGOutput() const;
+  const int GetState() const;
 
  protected:
   virtual const float GetMean() const = 0;

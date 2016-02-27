@@ -13,8 +13,9 @@ class Simulation {
   ~Simulation();
 
   void AddScenario(const Scenario* scenario);
-  float GetAverageAggregatedReturnRate(int steps) const;
-  float GetAverageLiability(int steps, float shock = 1.0) const;
+  float GetAverageStockPrice(float initial_price, int month) const;
+  float GetAverageLiability(float initial_price, int month,
+			    float shock = 1.0) const;
   void PrintScenarios() const;
 
  private:

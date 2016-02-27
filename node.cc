@@ -1,4 +1,7 @@
 #include "node.h"
+#include "scenario.h"
+#include "simulation.h"
+#include "constants.h"
 
 #include <random>
 #include <string>
@@ -31,6 +34,18 @@ void Node::TransFrom(const Node* node) {
 	node->GetSigma() * GenerateNormalRand();
   state_ = (old_state + (GenerateUniformRand() <=
 			 kTransProb[old_state])) % 2;
+//   stock_RW(t) = stock_RW(node-1)*Scenario::AggregateLogReturn(RW,node);
+  
+//   H(t) = stock_RW(t)*Scenario::GetAverageLiability(node,1)*exp(-ir_ * (T-node));
+//     Delta(t) = -(Scenario::GetAverageLiability(node,1)-Scenario::GetAverageLiability(node,0.99))/0.01;
+//     B(t) = H(t) - Delta(t)*stock_RW(t);
+//     MB(t)= max(GV-stock_RW(t),0)*(node=T)
+//       CF(t)= Delta(t)*stock_RW(t)+B(t)-Delta(t-1)*stock_RW(t)-B(t-1)*exp(ir_)-MB(t);
+//     Delta_BS(t) = -(Scenario::GetAverageLiability(node,1)-Scenario::GetAverageLiability(node,0.99))/0.01;
+//     B_BS(t) = H(t) - Delta(t)*stock_RW(t);
+// H_BS(t) = stock_RW(t)*Scenario::GetAverageLiability(node,1)*exp(-ir_ * (T-node));
+//     MB(t)= max(GV-stock_RW(t),0)*(node=T)
+//       CF_BS(t)= Delta(t)*stock_RW(t)+B(t)-Delta(t-1)*stock_RW(t)-B(t-1)*exp(ir_)-MB(t);
 }
 
 const float Node::GetLogReturn() const {
@@ -40,6 +55,10 @@ const float Node::GetLogReturn() const {
 const string Node::ESGOutput() const {
   return std::to_string(state_) + "," +
     std::to_string(log_return_);
+}
+
+const int Node::GetState() const {
+  return state_;
 }
 
 // static
